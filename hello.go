@@ -5,6 +5,7 @@ import "fmt"
 const (
 	englishHelloPrefix = "Hello, "
 	spanishHelloPrefix = "Hola, "
+	frenchHelloPrefix  = "Bonjour, "
 )
 
 func Hello(name, language string) string {
@@ -13,6 +14,9 @@ func Hello(name, language string) string {
 	}
 	if language == "Spanish" {
 		return spanishHelloPrefix + name + "!"
+	}
+	if language == "French" {
+		return frenchHelloPrefix + name + "!"
 	}
 	return englishHelloPrefix + name + "!"
 }
