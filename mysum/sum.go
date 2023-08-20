@@ -16,3 +16,12 @@ func SumAll(numbersToSum ...[]int) []int {
 	}
 	return result
 }
+
+func SumAllTails(numbersToSum ...[]int) []int {
+	// result := make([]int, len(numbersToSum))
+	var result []int
+	for _, arr := range numbersToSum {
+		result = append(result, Sum(arr[1:]))
+	}
+	return result
+}
