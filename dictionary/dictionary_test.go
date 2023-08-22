@@ -3,10 +3,22 @@ package dictionary
 import "testing"
 
 func TestAdd(t *testing.T) {
-	dictionary := Dictionary{}
-	word := "test"
-	want := "this is a test"
-	dictionary.Add(word, want)
+	t.Run("new word", func(t *testing.T) {
+		dictionary := Dictionary{}
+		word := "test"
+		want := "this is a test"
+		err := dictionary.Add(word, want)
+		assertError(t, err, nil)
+		assertDefinition(t, dictionary, word, want)
+	})
+	t.Run("existing word", func(t *testing.T) {
+		word := "test"
+		definition := "this is a test"
+		dictionary := Dictionary{word: definition}
+		err := dictionary.Add(word, "overwritten definition for same key")
+		assertError(t, err, ErrWordExists)
+		assertDefinition(t, dictionary, word, definition)
+	})
 }
 
 func assertDefinition(t *testing.T, dic Dictionary, word, defn string) {
