@@ -1,6 +1,8 @@
 package shapes
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestPerimeter(t *testing.T) {
 	rect := Rectangle{10.0, 10.0}
