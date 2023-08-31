@@ -3,11 +3,12 @@ package contextserver
 import (
 	"fmt"
 	"net/http"
+
+	"golang.org/x/net/context"
 )
 
 type Store interface {
-	Fetch() string
-	Cancel()
+	Fetch(ctx context.Context) (string, error)
 }
 
 func Server(store Store) http.HandlerFunc {
