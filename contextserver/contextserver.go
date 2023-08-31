@@ -1,10 +1,10 @@
 package contextserver
 
 import (
+	"context"
 	"fmt"
+	// "log"
 	"net/http"
-
-	"golang.org/x/net/context"
 )
 
 type Store interface {
@@ -13,18 +13,11 @@ type Store interface {
 
 func Server(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-
-		done := make(chan string, 1)
-		go func() {
-			done <- store.Fetch()
-		}()
-
-		select {
-		case <-ctx.Done():
-			store.Cancel()
-		case d := <-done:
-			fmt.Fprintf(w, d)
+		res, err := store.Fetch(r.Context())
+		if err != nil {
+			fmt.Printf("error fetching data from store: %v", err)
+			return
 		}
+		fmt.Fprint(w, res)
 	}
 }
