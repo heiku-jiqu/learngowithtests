@@ -22,10 +22,7 @@ type Point struct {
 func secondHand(w io.Writer, t time.Time) {
 	p := secondHandPoint(t)
 
-	p = Point{
-		X: clockCentreX + p.X*secondHandLength,
-		Y: clockCentreY - p.Y*secondHandLength,
-	}
+	p = makeHand(p, secondHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
 }
 
@@ -46,6 +43,13 @@ func angleToPoint(radian float64) Point {
 	}
 }
 
+func makeHand(p Point, length float64) Point {
+	p = Point{p.X * length, p.Y * length}
+	p = Point{p.X, -p.Y}
+	p = Point{p.X + clockCentreX, p.Y + clockCentreY}
+	return p
+}
+
 func secondHandPoint(t time.Time) Point {
 	seconds_radians := secondsInRadians(t)
 	return angleToPoint(seconds_radians)
@@ -58,9 +62,7 @@ func minuteHandPoint(t time.Time) Point {
 
 func minuteHand(w io.Writer, t time.Time) {
 	p := minuteHandPoint(t)
-	p = Point{p.X * minuteHandLength, p.Y * minuteHandLength}
-	p = Point{p.X, -p.Y}
-	p = Point{p.X + clockCentreX, p.Y + clockCentreY}
+	p = makeHand(p, minuteHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#000;stroke-width:3px;"/>`, p.X, p.Y)
 }
 
