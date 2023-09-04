@@ -25,3 +25,12 @@ func secondsInRadians(t time.Time) float64 {
 	seconds_radians := seconds_fraction * 2 * math.Pi
 	return seconds_radians
 }
+
+func secondHandPoint(t time.Time) Point {
+	seconds_radians := secondsInRadians(t)
+
+	return Point{
+		X: math.Sin(seconds_radians),
+		Y: math.Cos(seconds_radians),
+	}
+}
