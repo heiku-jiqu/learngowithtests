@@ -2,21 +2,21 @@ package blogposts
 
 import (
 	"io/fs"
-	"log"
 )
 
 type Post struct {
 	Title string
 }
 
-func NewPostsFromFS(filesys fs.FS) []Post {
+func NewPostsFromFS(filesys fs.FS) ([]Post, error) {
 	dirEntries, err := fs.ReadDir(filesys, ".")
 	if err != nil {
-		log.Fatalf("failed to read directory: %q", err)
+		return nil, err
 	}
+
 	var posts []Post
 	for _, entry := range dirEntries {
 		posts = append(posts, Post{Title: entry.Name()})
 	}
-	return posts
+	return posts, nil
 }
