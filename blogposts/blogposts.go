@@ -1,6 +1,7 @@
 package blogposts
 
 import (
+	"io"
 	"io/fs"
 )
 
@@ -16,7 +17,23 @@ func NewPostsFromFS(filesys fs.FS) ([]Post, error) {
 
 	var posts []Post
 	for _, entry := range dirEntries {
-		posts = append(posts, Post{Title: entry.Name()})
+		post, _ := getPost(filesys, entry)
+		posts = append(posts, post)
 	}
 	return posts, nil
+}
+
+func getPost(filesys fs.FS, entry fs.DirEntry) (Post, error) {
+	file, err := filesys.Open(entry.Name())
+	if err != nil {
+		return Post{}, err
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return Post{}, err
+	}
+	post := Post{Title: string(data[7:])}
+	return post, nil
 }
