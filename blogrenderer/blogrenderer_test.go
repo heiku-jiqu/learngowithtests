@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"hello/blogrenderer"
 	"testing"
+
+	"github.com/approvals/go-approval-tests"
 )
 
 func TestRender(t *testing.T) {
@@ -20,10 +22,6 @@ func TestRender(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		got := buf.String()
-		want := `<h1>hello world</h1><p>This is a description</p>Tags: <ul><li>go</li><li>tdd</li></ul>`
-		if got != want {
-			t.Errorf("got %q, want %q", got, want)
-		}
+		approvals.VerifyString(t, buf.String())
 	})
 }
