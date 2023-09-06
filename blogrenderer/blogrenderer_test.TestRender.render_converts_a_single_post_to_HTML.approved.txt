@@ -34,3 +34,8 @@ Tags: <ul><li>go</li><li>tdd</li></ul>
 </body>
 </html>
 
+<p>This is a post</p>
+
+<h1 id="header">header</h1>
+
+<p><strong>bolded</strong></p>
