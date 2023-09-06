@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"strings"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
@@ -51,4 +52,12 @@ func (r *PostRenderer) renderMarkdownBody(w io.Writer, body string) {
 	renderer := html.NewRenderer(opts)
 
 	fmt.Fprint(w, string(markdown.Render(doc, renderer)))
+}
+
+func (p Post) SanitisedTitle() string {
+	return strings.ToLower(strings.Replace(p.Title, " ", "-", -1))
+}
+
+func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
+	return r.templ.ExecuteTemplate(w, "index.gohtml", posts)
 }

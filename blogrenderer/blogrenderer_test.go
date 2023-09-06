@@ -30,6 +30,19 @@ func TestRender(t *testing.T) {
 		}
 		approvals.VerifyString(t, buf.String())
 	})
+
+	t.Run("renders an index of posts", func(t *testing.T) {
+		buf := bytes.Buffer{}
+		posts := []blogrenderer.Post{
+			{Title: "Hello World"},
+			{Title: "Hello World 2"},
+		}
+		renderer, _ := blogrenderer.NewPostRenderer()
+		if err := renderer.RenderIndex(&buf, posts); err != nil {
+			t.Fatal(err)
+		}
+		approvals.VerifyString(t, buf.String())
+	})
 }
 
 func BenchmarkRenderer(b *testing.B) {
