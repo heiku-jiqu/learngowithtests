@@ -27,9 +27,17 @@ func TestNewBlogPosts(t *testing.T) {
 	t.Run("reads blogposts from FS", func(t *testing.T) {
 		const (
 			firstBody = `Title: Post 1
-Description: Description 1`
+Description: Description 1
+Tags: tdd, go
+---
+Hello
+World`
 			secondBody = `Title: Post 2
-Description: Description 2`
+Description: Description 2
+Tags: rust, borrow-checker
+---
+Good
+Bye`
 		)
 		fs := fstest.MapFS{
 			"hello world.md":  {Data: []byte(firstBody)},
@@ -44,7 +52,13 @@ Description: Description 2`
 			t.Errorf("got %d posts, want %d posts", len(posts), len(fs))
 		}
 		got := posts[0]
-		want := blogposts.Post{Title: "Post 1", Description: "Description 1"}
+		want := blogposts.Post{
+			Title:       "Post 1",
+			Description: "Description 1",
+			Tags:        []string{"tdd", "go"},
+			Body: `Hello
+World`,
+		}
 		assertPost(t, got, want)
 	})
 }
